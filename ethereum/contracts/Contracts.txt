@@ -1,0 +1,45 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract CertificateValidator {
+    ECertificateContract private certificateContract;
+
+    constructor(address certificateContractAddress) {
+        certificateContract = ECertificateContract(certificateContractAddress);
+    }
+
+    function validateCertificate(uint256 tokenId) external view returns (bool) {
+        // Perform certificate validation logic here.
+        // For demonstration, let's assume all certificates are considered valid.
+        // You should replace this with your actual validation logic.
+        string memory certificateDetails = certificateContract.getCertificateDetails(tokenId);
+        return bytes(certificateDetails).length > 0;
+    }
+}
+
+
+
+
+contract ServiceAccessControl {
+    ECertificateContract private certificateContract;
+
+    constructor(address certificateContractAddress) {
+        certificateContract = ECertificateContract(certificateContractAddress);
+    }
+
+    function validateCertificate(uint256 tokenId) internal view returns (bool) {
+        // Perform certificate validation logic here.
+
+
+        string memory certificateDetails = certificateContract.getCertificateDetails(tokenId);
+        return bytes(certificateDetails).length > 0;
+    }
+
+    function grantServiceAccess(uint256 tokenId) external view returns (bool) {
+        // Assume validation must be successful before granting access.
+        return validateCertificate(tokenId);
+    }
+}
